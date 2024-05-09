@@ -1,0 +1,23 @@
+---
+
+- name: Prepare Our Web Server
+  hosts: webservers
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks: 
+    - name: Install nano
+      yum: 
+       name: 
+        - httpd
+        - php 
+       state: present
+    - name: touch file in tmp directory
+      command: touch /tmp/ansible_test2
+    - name: Copy file with owner and permissions
+      copy:
+       src: /tmp/src
+       dest: /tmp/dst2
+    - name: Run httpd service
+      service: httpd
+      state: started
